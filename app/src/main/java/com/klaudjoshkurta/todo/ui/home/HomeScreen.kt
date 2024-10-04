@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,9 +32,24 @@ import com.klaudjoshkurta.todo.model.mockTodos
 import com.klaudjoshkurta.todo.ui.theme.TodoTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onNewTodo: () -> Unit = {},
+) {
     Scaffold(
         topBar = { HomeTopBar() },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNewTodo,
+                containerColor = Color.Black,
+                contentColor = Color.White
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        },
         containerColor = Color.White
     ) { innerPadding ->
         Box(
