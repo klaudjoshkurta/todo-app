@@ -37,7 +37,8 @@ fun AppNavigation(
 
         composable(Screen.NewTodo.route) {
             NewTodoScreen(
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.navigateUp() }
             )
         }
     }

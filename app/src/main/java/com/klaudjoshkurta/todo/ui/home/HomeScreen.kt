@@ -18,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,15 +28,20 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.klaudjoshkurta.todo.R
 import com.klaudjoshkurta.todo.model.Todo
-import com.klaudjoshkurta.todo.model.mockTodos
+import com.klaudjoshkurta.todo.ui.AppViewModelProvider
 import com.klaudjoshkurta.todo.ui.theme.TodoTheme
 
 @Composable
 fun HomeScreen(
     onNewTodo: () -> Unit = {},
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+
+    val homeUiState by viewModel.homeUiState.collectAsState()
+
     Scaffold(
         topBar = { HomeTopBar() },
         floatingActionButton = {
@@ -66,7 +73,7 @@ fun HomeScreen(
                         modifier = Modifier.padding(16.dp).fillMaxWidth()
                     )
                 }
-                items(mockTodos, key = { it.id }) { todo ->
+                items(homeUiState.todos, key = { it.id }) { todo ->
                     TodoItem(
                         todo = todo,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

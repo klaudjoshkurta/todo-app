@@ -15,11 +15,15 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
 
         initializer {
-            HomeViewModel()
+            HomeViewModel(
+                todoApplication().container.todosRepository
+            )
         }
 
         initializer {
-            NewTodoViewModel()
+            NewTodoViewModel(
+                todoApplication().container.todosRepository
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.klaudjoshkurta.todo.di
 
 import android.content.Context
+import com.klaudjoshkurta.todo.db.AppDatabase
 import com.klaudjoshkurta.todo.repository.OfflineTodosRepository
 import com.klaudjoshkurta.todo.repository.TodosRepository
 
@@ -19,6 +20,6 @@ class AppDataContainer(private val context: Context) : AppContainer {
      * Implementation for [TodosRepository]
      */
     override val todosRepository: TodosRepository by lazy {
-        OfflineTodosRepository()
+        OfflineTodosRepository(AppDatabase.getDatabase(context).todoDao())
     }
 }

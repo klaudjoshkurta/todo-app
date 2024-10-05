@@ -5,11 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.klaudjoshkurta.todo.model.Todo
+import com.klaudjoshkurta.todo.repository.TodosRepository
 
 /**
  * ViewModel to validate and insert todos in the Room database.
  */
-class NewTodoViewModel : ViewModel() {
+class NewTodoViewModel(
+    private val todosRepository: TodosRepository
+) : ViewModel() {
 
     /**
      * Holds current todo ui state
@@ -29,6 +32,12 @@ class NewTodoViewModel : ViewModel() {
     private fun validateInput(uiState: TodoDetails = todoUiState.todoDetails): Boolean {
         return with(uiState) {
             title.isNotBlank()
+        }
+    }
+
+    suspend fun saveTodo() {
+        if (validateInput()) {
+            todosRepository.insertTodo(todoUiState.todoDetails.toTodo())
         }
     }
 }

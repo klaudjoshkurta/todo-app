@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -35,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.klaudjoshkurta.todo.R
 import com.klaudjoshkurta.todo.ui.AppViewModelProvider
 import com.klaudjoshkurta.todo.ui.theme.TodoTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun NewTodoScreen(
@@ -44,6 +46,7 @@ fun NewTodoScreen(
 ) {
 
     val focusRequester = remember { FocusRequester() }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
@@ -75,7 +78,12 @@ fun NewTodoScreen(
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth().height(48.dp),
-                    onClick = {},
+                    onClick = {
+                        coroutineScope.launch {
+                            viewModel.saveTodo()
+                            navigateBack()
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black,
                         contentColor = Color.White
