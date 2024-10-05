@@ -1,5 +1,6 @@
 package com.klaudjoshkurta.todo.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +35,7 @@ import com.klaudjoshkurta.todo.R
 import com.klaudjoshkurta.todo.model.Todo
 import com.klaudjoshkurta.todo.ui.AppViewModelProvider
 import com.klaudjoshkurta.todo.ui.theme.TodoTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -41,6 +44,7 @@ fun HomeScreen(
 ) {
 
     val homeUiState by viewModel.homeUiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = { HomeTopBar() },
@@ -76,7 +80,14 @@ fun HomeScreen(
                 items(homeUiState.todos, key = { it.id }) { todo ->
                     TodoItem(
                         todo = todo,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                coroutineScope.launch {
+                                    viewModel.completeTodo(todo)
+                                }
+                            }
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                 }
             }
